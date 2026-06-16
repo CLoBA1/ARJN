@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Jesús de Nazaret</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   CSS VARIABLES
+═══════════════════════════════════════ */
+:root {
+  /* Colores principales */
+  --color-primary:       #198cbd;
+  --color-primary-hover: #1577a1;
+  --color-primary-light: rgba(25,140,189,0.15);
+  --color-secondary:     #175a7f;
+  --color-secondary-dark:#124866;
+  --color-dark:          #1d1d1d;
+  --color-neutral:       #43484c;
+  --color-light:         #F8F6F2;
+  --color-white:         #FFFFFF;
+  --color-overlay:       rgba(29,29,29,0.60);
+  --color-gold:          #C9A84C;
+  --color-gold-subtle:   rgba(201,168,76,0.30);
+  --color-success:       #2d8a4e;
+  --color-error:         #c0392b;
+  --color-warning:       #d4820a;
+
+  /* Tipografía */
+  --font-serif:   'Playfair Display', serif;
+  --font-sans:    'Lato', sans-serif;
+  --text-xs:   12px;
+  --text-sm:   14px;
+  --text-base: 16px;
+  --text-lg:   18px;
+  --text-xl:   22px;
+  --text-2xl:  28px;
+  --text-3xl:  36px;
+  --text-4xl:  48px;
+  --text-5xl:  64px;
+
+  /* Espaciado */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+  --space-10: 128px;
+
+  /* Radios */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 3px rgba(29,29,29,0.08);
+  --shadow-md: 0 4px 16px rgba(29,29,29,0.12);
+  --shadow-lg: 0 8px 32px rgba(29,29,29,0.16);
+  --shadow-xl: 0 16px 48px rgba(29,29,29,0.20);
+
+  /* Transiciones */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease-in-out;
+
+  /* Breakpoints (referencia) */
+  --bp-sm:  576px;
+  --bp-md:  768px;
+  --bp-lg:  992px;
+  --bp-xl:  1200px;
+  --bp-2xl: 1400px;
+}
+
+/* ═══════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-dark);
+  background: var(--color-light);
+  line-height: 1.6;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+/* ═══════════════════════════════════════
+   LAYOUT UTILS
+═══════════════════════════════════════ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+.ds-section {
+  padding: var(--space-9) 0;
+}
+.ds-section + .ds-section {
+  border-top: 1px solid var(--color-gold-subtle);
+}
+.ds-section--dark {
+  background: var(--color-dark);
+  color: var(--color-white);
+}
+.ds-section--navy {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+.ds-section--white {
+  background: var(--color-white);
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  color: var(--color-secondary);
+  margin-bottom: var(--space-2);
+}
+.ds-section--dark .section-title,
+.ds-section--navy .section-title {
+  color: var(--color-white);
+}
+.section-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-neutral);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+}
+.ds-section--dark .section-subtitle,
+.ds-section--navy .section-subtitle {
+  color: rgba(255,255,255,0.6);
+}
+.section-divider {
+  width: 48px;
+  height: 2px;
+  background: var(--color-gold);
+  margin: var(--space-4) 0 var(--space-7);
+}
+.grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--space-5); }
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-5); }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--space-5); }
+.grid-7 { display: grid; grid-template-columns: repeat(7,1fr); gap: var(--space-4); }
+.flex { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+
+/* ═══════════════════════════════════════
+   1. PALETA DE COLORES
+═══════════════════════════════════════ */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-5);
+}
+.color-swatch {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  background: var(--color-white);
+}
+.color-swatch__block {
+  height: 100px;
+  width: 100%;
+}
+.color-swatch__info {
+  padding: var(--space-3) var(--space-4);
+}
+.color-swatch__name {
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--color-dark);
+  display: block;
+}
+.color-swatch__hex {
+  font-size: var(--text-xs);
+  color: var(--color-neutral);
+  font-family: monospace;
+  display: block;
+  margin-top: 2px;
+}
+.color-swatch__use {
+  font-size: var(--text-xs);
+  color: var(--color-neutral);
+  display: block;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* ═══════════════════════════════════════
+   2. TIPOGRAFÍA
+═══════════════════════════════════════ */
+.type-scale-item {
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid rgba(67,72,76,0.15);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+}
+.type-scale-item:last-child { border-bottom: none; }
+.type-scale-label {
+  font-size: var(--text-xs);
+  color: var(--color-neutral);
+  font-family: monospace;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+.type-demo { line-height: 1.2; }
+
+.heading-demo { margin-bottom: var(--space-4); }
+.heading-demo span {
+  display: inline-block;
+  font-size: var(--text-xs);
+  color: var(--color-neutral);
+  font-family: monospace;
+  margin-left: var(--space-3);
+  vertical-align: middle;
+}
+h1.demo { font-family: var(--font-serif); font-size: var(--text-5xl); font-weight: 700; line-height: 1.1; }
+h2.demo { font-family: var(--font-serif); font-size: var(--text-4xl); font-weight: 700; line-height: 1.15; }
+h3.demo { font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 600; line-height: 1.2; }
+h4.demo { font-family: var(--font-sans); font-size: var(--text-2xl); font-weight: 600; line-height: 1.3; }
+h5.demo { font-family: var(--font-sans); font-size: var(--text-xl); font-weight: 600; line-height: 1.35; }
+h6.demo { font-family: var(--font-sans); font-size: var(--text-lg); font-weight: 600; line-height: 1.4; }
+.demo-body { font-family: var(--font-sans); font-size: var(--text-base); line-height: 1.7; color: var(--color-neutral); max-width: 640px; }
+.demo-quote { font-family: var(--font-serif); font-style: italic; font-size: var(--text-xl); color: var(--color-secondary); border-left: 3px solid var(--color-gold); padding-left: var(--space-5); max-width: 560px; line-height: 1.6; }
+.demo-price { font-family: var(--font-sans); font-weight: 700; font-size: var(--text-2xl); color: var(--color-primary); }
+
+/* ═══════════════════════════════════════
+   3. BOTONES
+═══════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+/* Sizes */
+.btn--sm  { font-size: var(--text-sm);  padding: 6px 16px;  }
+.btn--md  { font-size: var(--text-base); padding: 10px 24px; }
+.btn--lg  { font-size: var(--text-lg);  padding: 14px 36px; }
+/* Primary */
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+.btn--primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.btn--primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+/* Secondary */
+.btn--secondary {
+  background: transparent;
+  color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+.btn--secondary:hover:not(:disabled) {
+  background: var(--color-secondary);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.btn--secondary:active:not(:disabled) { transform: translateY(0); }
+/* Dark */
+.btn--dark {
+  background: var(--color-dark);
+  color: var(--color-white);
+  border-color: var(--color-dark);
+}
+.btn--dark:hover:not(:disabled) {
+  background: #333;
+  border-color: #333;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+/* Ghost */
+.btn--ghost {
+  background: transparent;
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+.btn--ghost:hover:not(:disabled) {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+/* Danger */
+.btn--danger {
+  background: var(--color-error);
+  color: var(--color-white);
+  border-color: var(--color-error);
+}
+.btn--danger:hover:not(:disabled) {
+  background: #a93226;
+  border-color: #a93226;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+/* Disabled */
+.btn:disabled, .btn--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+/* Icon button */
+.btn--icon {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: var(--radius-full);
+  font-size: var(--text-lg);
+}
+.btn--icon.btn--lg { width: 52px; height: 52px; font-size: var(--text-xl); }
+.btn--icon.btn--sm { width: 32px; height: 32px; font-size: var(--text-sm); }
+
+.btn-group { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin-bottom: var(--space-5); }
+.btn-label { font-size: var(--text-xs); color: var(--color-neutral); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-3); display: block; }
+
+/* ═══════════════════════════════════════
+   4. BADGES
+═══════════════════════════════════════ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.badge--new      { background: var(--color-primary); color: #fff; }
+.badge--offer    { background: var(--color-gold); color: #fff; }
+.badge--sold-out { background: var(--color-neutral); color: #fff; }
+.badge--free-ship{ background: #e8f5ee; color: var(--color-success); border: 1px solid rgba(45,138,78,0.25); }
+.badge--bestseller{ background: var(--color-secondary); color: #fff; }
+
+/* ═══════════════════════════════════════
+   5. FORMULARIOS
+═══════════════════════════════════════ */
+.form-group { margin-bottom: var(--space-5); }
+.form-label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: var(--space-2);
+}
+.input-wrap { position: relative; }
+.form-control {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-dark);
+  background: var(--color-white);
+  border: 1.5px solid #d0d3d5;
+  border-radius: var(--radius-md);
+  padding: 10px var(--space-4);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  outline: none;
+  appearance: none;
+}
+.form-control:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+.form-control.has-icon-left { padding-left: 42px; }
+.form-control--error { border-color: var(--color-error) !important; }
+.form-control--error:focus { box-shadow: 0 0 0 3px rgba(192,57,43,0.15) !important; }
+.form-control--success { border-color: var(--color-success) !important; }
+.form-control--success:focus { box-shadow: 0 0 0 3px rgba(45,138,78,0.15) !important; }
+.form-control:disabled {
+  background: #f0f1f2;
+  color: var(--color-neutral);
+  cursor: not-allowed;
+}
+.input-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-neutral);
+  display: flex;
+  align-items: center;
+}
+.input-icon--left  { left: 12px; }
+.input-icon--right { right: 12px; }
+.form-hint {
+  font-size: var(--text-xs);
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.form-hint--error   { color: var(--color-error); }
+.form-hint--success { color: var(--color-success); }
+textarea.form-control { min-height: 120px; resize: vertical; line-height: 1.6; }
+/* Checkbox & Radio */
+.check-group, .radio-group { display: flex; flex-direction: column; gap: var(--space-3); }
+.check-label, .radio-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  font-size: var(--text-base);
+  color: var(--color-dark);
+  user-select: none;
+}
+.check-label input[type="checkbox"],
+.radio-label input[type="radio"] { display: none; }
+.check-box {
+  width: 20px; height: 20px;
+  border: 2px solid #d0d3d5;
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  transition: all var(--transition-fast);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.check-label input[type="checkbox"]:checked ~ .check-box {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.check-label input[type="checkbox"]:checked ~ .check-box::after {
+  content: '';
+  width: 10px; height: 6px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+  display: block;
+}
+.radio-circle {
+  width: 20px; height: 20px;
+  border: 2px solid #d0d3d5;
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  transition: all var(--transition-fast);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.radio-label input[type="radio"]:checked ~ .radio-circle {
+  border-color: var(--color-primary);
+}
+.radio-label input[type="radio"]:checked ~ .radio-circle::after {
+  content: '';
+  width: 10px; height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  display: block;
+}
+/* Toggle */
+.toggle-label {
+  display: flex; align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--text-base);
+}
+.toggle-label input { display: none; }
+.toggle-track {
+  width: 46px; height: 26px;
+  background: #d0d3d5;
+  border-radius: var(--radius-full);
+  position: relative;
+  transition: background var(--transition-base);
+  flex-shrink: 0;
+}
+.toggle-thumb {
+  position: absolute;
+  width: 20px; height: 20px;
+  background: #fff;
+  border-radius: var(--radius-full);
+  top: 3px; left: 3px;
+  transition: transform var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+.toggle-label input:checked ~ .toggle-track { background: var(--color-primary); }
+.toggle-label input:checked ~ .toggle-track .toggle-thumb { transform: translateX(20px); }
+
+/* ═══════════════════════════════════════
+   6. CARDS DE PRODUCTO
+═══════════════════════════════════════ */
+.product-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  position: relative;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+.product-card__image {
+  aspect-ratio: 4/3;
+  background: var(--color-light);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.product-card__image-placeholder {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+  color: rgba(67,72,76,0.25);
+}
+.product-card__image-placeholder svg {
+  width: 64px; height: 64px;
+  opacity: 0.3;
+}
+.product-card__badge {
+  position: absolute;
+  top: var(--space-3); left: var(--space-3);
+  z-index: 1;
+}
+.product-card__fav {
+  position: absolute;
+  top: var(--space-3); right: var(--space-3);
+  z-index: 1;
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.92);
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-neutral);
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+.product-card__fav:hover { color: #e74c3c; transform: scale(1.1); }
+.product-card__fav.active { color: #e74c3c; }
+.product-card__body { padding: var(--space-4) var(--space-5); }
+.product-card__category {
+  font-size: var(--text-xs);
+  color: var(--color-neutral);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+.product-card__name {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  color: var(--color-dark);
+  line-height: 1.35;
+  margin-bottom: var(--space-3);
+}
+.product-card__rating {
+  display: flex; align-items: center; gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+.stars { color: var(--color-gold); font-size: var(--text-sm); letter-spacing: 1px; }
+.rating-count { font-size: var(--text-xs); color: var(--color-neutral); }
+.product-card__pricing {
+  display: flex; align-items: baseline; gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.price-current { font-weight: 700; font-size: var(--text-xl); color: var(--color-primary); }
+.price-original { font-size: var(--text-sm); color: var(--color-neutral); text-decoration: line-through; }
+.product-card__footer { padding: 0 var(--space-5) var(--space-5); }
+
+/* Card horizontal */
+.product-card--horizontal {
+  display: flex;
+  flex-direction: row;
+}
+.product-card--horizontal .product-card__image {
+  width: 160px;
+  min-width: 160px;
+  aspect-ratio: auto;
+}
+.product-card--horizontal .product-card__body { flex: 1; }
+.product-card--horizontal .product-card__footer { padding: 0 var(--space-5) var(--space-4); }
+
+/* Card mini */
+.product-card--mini {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  align-items: center;
+}
+.product-card--mini .product-card__image {
+  width: 72px; min-width: 72px;
+  height: 72px;
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+}
+.product-card--mini .product-card__body { padding: 0; flex: 1; }
+.product-card--mini .product-card__name { font-size: var(--text-sm); margin-bottom: var(--space-1); }
+.product-card--mini .price-current { font-size: var(--text-base); }
+
+/* ═══════════════════════════════════════
+   7. NAVBAR
+═══════════════════════════════════════ */
+.navbar {
+  background: var(--color-secondary);
+  padding: 0 var(--space-5);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.navbar__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  gap: var(--space-6);
+}
+.navbar__logo {
+  display: flex; align-items: center; gap: var(--space-3);
+  color: var(--color-white);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.navbar__logo-icon {
+  width: 32px; height: 32px;
+  color: var(--color-gold);
+}
+.navbar__logo-text {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-white);
+}
+.navbar__logo-sub {
+  font-size: var(--text-xs);
+  color: rgba(255,255,255,0.65);
+  font-weight: 400;
+  display: block;
+  letter-spacing: 0.06em;
+}
+.navbar__nav {
+  display: flex;
+  gap: var(--space-6);
+  align-items: center;
+}
+.navbar__nav a {
+  color: rgba(255,255,255,0.85);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+.navbar__nav a:hover,
+.navbar__nav a.active {
+  color: var(--color-white);
+  border-bottom-color: var(--color-primary);
+}
+.navbar__actions {
+  display: flex; align-items: center; gap: var(--space-4);
+  flex-shrink: 0;
+}
+.nav-action-btn {
+  position: relative;
+  color: rgba(255,255,255,0.85);
+  background: none; border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  padding: 6px;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+.nav-action-btn:hover { color: var(--color-white); background: rgba(255,255,255,0.1); }
+.nav-action-btn svg { width: 22px; height: 22px; }
+.nav-badge {
+  position: absolute;
+  top: 0; right: 0;
+  width: 18px; height: 18px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  display: flex; align-items: center; justify-content: center;
+  transform: translate(4px,-4px);
+}
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--color-white);
+  border-radius: 2px;
+  transition: all var(--transition-base);
+}
+
+/* ═══════════════════════════════════════
+   8. HERO BANNER
+═══════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 560px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-dark) 100%);
+  overflow: hidden;
+  padding: var(--space-10) var(--space-5);
+}
+.hero__pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 60px,
+      rgba(201,168,76,0.04) 60px,
+      rgba(201,168,76,0.04) 61px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 60px,
+      rgba(201,168,76,0.04) 60px,
+      rgba(201,168,76,0.04) 61px
+    );
+}
+.hero__cross {
+  position: absolute;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.hero__cross svg {
+  width: 400px; height: 400px;
+  opacity: 0.04;
+  color: var(--color-gold);
+}
+.hero__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 720px;
+}
+.hero__eyebrow {
+  font-size: var(--text-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  font-weight: 600;
+  margin-bottom: var(--space-4);
+  display: flex; align-items: center; justify-content: center; gap: var(--space-3);
+}
+.hero__eyebrow::before,
+.hero__eyebrow::after {
+  content: '';
+  display: block;
+  width: 32px; height: 1px;
+  background: var(--color-gold);
+}
+.hero__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-5xl);
+  font-style: italic;
+  color: var(--color-white);
+  line-height: 1.15;
+  margin-bottom: var(--space-5);
+}
+.hero__subtitle {
+  font-size: var(--text-lg);
+  color: rgba(255,255,255,0.75);
+  margin-bottom: var(--space-7);
+  line-height: 1.7;
+}
+.hero__actions { display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; }
+
+/* ═══════════════════════════════════════
+   9. CATEGORY CARDS
+═══════════════════════════════════════ */
+.category-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-6) var(--space-5);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  border: 1.5px solid transparent;
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-3);
+}
+.category-card:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+.category-card:hover .category-card__icon { transform: scale(1.1); color: var(--color-white); }
+.category-card:hover .category-card__name { color: var(--color-white); }
+.category-card__icon {
+  font-size: 36px;
+  line-height: 1;
+  color: var(--color-primary);
+  transition: all var(--transition-base);
+}
+.category-card__name {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-dark);
+  transition: color var(--transition-base);
+  line-height: 1.3;
+}
+
+/* ═══════════════════════════════════════
+   10. FOOTER
+═══════════════════════════════════════ */
+.footer {
+  background: var(--color-dark);
+  color: rgba(255,255,255,0.75);
+  padding: var(--space-9) 0 0;
+}
+.footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: var(--space-8);
+}
+.footer__brand-logo {
+  display: flex; align-items: center; gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.footer__brand-name {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  color: var(--color-white);
+  font-weight: 700;
+}
+.footer__tagline {
+  font-style: italic;
+  font-size: var(--text-sm);
+  color: rgba(255,255,255,0.5);
+  margin-bottom: var(--space-5);
+}
+.footer__socials { display: flex; gap: var(--space-3); }
+.social-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: rgba(255,255,255,0.65);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 14px;
+}
+.social-btn:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+.footer__col-title {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-5);
+}
+.footer__links { display: flex; flex-direction: column; gap: var(--space-3); }
+.footer__links a {
+  font-size: var(--text-sm);
+  color: rgba(255,255,255,0.65);
+  transition: color var(--transition-fast);
+}
+.footer__links a:hover { color: var(--color-primary); }
+.footer__contact-item {
+  display: flex; gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: rgba(255,255,255,0.65);
+  margin-bottom: var(--space-3);
+  align-items: flex-start;
+}
+.footer__contact-item svg { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; color: var(--color-primary); }
+.footer__bottom {
+  margin-top: var(--space-7);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: var(--space-5) var(--space-5);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);
+}
+.footer__copyright { font-size: var(--text-xs); color: rgba(255,255,255,0.4); }
+.footer__faith { font-size: var(--text-xs); color: rgba(255,255,255,0.4); }
+
+/* ═══════════════════════════════════════
+   11. ALERTAS / TOASTS
+═══════════════════════════════════════ */
+.alert {
+  display: flex; align-items: flex-start; gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  border-left: 4px solid;
+  margin-bottom: var(--space-4);
+  position: relative;
+  animation: alertIn var(--transition-slow) both;
+}
+@keyframes alertIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.alert--success { background: #edfaf3; border-color: var(--color-success); color: #1a5c30; }
+.alert--error   { background: #fdf0ee; border-color: var(--color-error);   color: #7b2014; }
+.alert--warning { background: #fef9ee; border-color: var(--color-warning); color: #7a4b06; }
+.alert--info    { background: var(--color-primary-light); border-color: var(--color-primary); color: #0a4a6a; }
+.alert__icon { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; }
+.alert__content { flex: 1; }
+.alert__title { font-weight: 700; font-size: var(--text-sm); margin-bottom: 2px; }
+.alert__text  { font-size: var(--text-sm); opacity: 0.85; }
+.alert__close {
+  background: none; border: none; cursor: pointer;
+  color: inherit; opacity: 0.5;
+  transition: opacity var(--transition-fast);
+  padding: 0;
+  display: flex;
+}
+.alert__close:hover { opacity: 1; }
+
+/* ═══════════════════════════════════════
+   12. MODAL
+═══════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: var(--color-overlay);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200;
+  padding: var(--space-5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+}
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 520px;
+  transform: translateY(20px);
+  transition: transform var(--transition-base);
+  overflow: hidden;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal__header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid rgba(67,72,76,0.1);
+}
+.modal__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  color: var(--color-dark);
+  font-weight: 700;
+}
+.modal__close {
+  background: none; border: none; cursor: pointer;
+  color: var(--color-neutral);
+  width: 36px; height: 36px;
+  border-radius: var(--radius-full);
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition-fast);
+  font-size: 20px;
+}
+.modal__close:hover { background: var(--color-light); color: var(--color-dark); }
+.modal__body { padding: var(--space-6); }
+.modal__footer {
+  display: flex; gap: var(--space-3); justify-content: flex-end;
+  padding: var(--space-5) var(--space-6);
+  border-top: 1px solid rgba(67,72,76,0.1);
+  background: var(--color-light);
+}
+
+/* ═══════════════════════════════════════
+   DEMO SCAFFOLD
+═══════════════════════════════════════ */
+.ds-header {
+  background: linear-gradient(135deg, var(--color-secondary-dark) 0%, var(--color-secondary) 100%);
+  padding: var(--space-9) 0;
+  text-align: center;
+  color: var(--color-white);
+}
+.ds-header__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  margin-bottom: var(--space-3);
+}
+.ds-header__sub {
+  font-size: var(--text-lg);
+  color: rgba(255,255,255,0.7);
+}
+.ds-header__cross {
+  font-size: 48px;
+  margin-bottom: var(--space-5);
+  opacity: 0.8;
+}
+
+/* Demo boxes */
+.demo-box {
+  background: var(--color-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  margin-bottom: var(--space-5);
+}
+.demo-box--dark {
+  background: var(--color-dark);
+  color: var(--color-white);
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 992px) {
+  .grid-4 { grid-template-columns: repeat(2,1fr); }
+  .grid-7 { grid-template-columns: repeat(4,1fr); }
+  .footer__inner { grid-template-columns: 1fr 1fr; }
+  .hero__title { font-size: var(--text-4xl); }
+  h1.demo { font-size: var(--text-4xl); }
+}
+@media (max-width: 768px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .grid-4 { grid-template-columns: 1fr 1fr; }
+  .grid-7 { grid-template-columns: repeat(3,1fr); }
+  .footer__inner { grid-template-columns: 1fr; gap: var(--space-6); }
+  .hero__title { font-size: var(--text-3xl); }
+  h1.demo { font-size: var(--text-3xl); }
+  .navbar__nav { display: none; }
+  .hamburger { display: flex; }
+  .product-card--horizontal { flex-direction: column; }
+  .product-card--horizontal .product-card__image { width: 100%; height: 200px; }
+  .hero { min-height: 440px; padding: var(--space-8) var(--space-5); }
+}
+@media (max-width: 576px) {
+  .grid-4 { grid-template-columns: 1fr; }
+  .grid-7 { grid-template-columns: repeat(2,1fr); }
+  .ds-section { padding: var(--space-7) 0; }
+  .navbar__logo-text { font-size: var(--text-base); }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+  DESIGN SYSTEM HEADER
+════════════════════════════════════ -->
+<header class="ds-header">
+  <div class="ds-header__cross">&#10013;</div>
+  <div class="ds-header__title">Design System</div>
+  <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:22px;color:rgba(255,255,255,0.85);margin-bottom:8px;">Jesús de Nazaret</div>
+  <div class="ds-header__sub">E-commerce de Artículos Religiosos Católicos</div>
+</header>
+
+<!-- ════════════════════════════════════
+  7. NAVBAR (mostrada primero para contexto)
+════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="navbar__inner">
+    <a href="#" class="navbar__logo">
+      <svg class="navbar__logo-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="16" y1="3" x2="16" y2="29"/>
+        <line x1="7" y1="10" x2="25" y2="10"/>
+      </svg>
+      <div>
+        <div class="navbar__logo-text">Jesús de Nazaret</div>
+        <span class="navbar__logo-sub">Artículos Religiosos</span>
+      </div>
+    </a>
+    <nav class="navbar__nav">
+      <a href="#" class="active">Inicio</a>
+      <a href="#">Catálogo</a>
+      <a href="#">Nosotros</a>
+      <a href="#">Contacto</a>
+    </nav>
+    <div class="navbar__actions">
+      <button class="nav-action-btn" title="Buscar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="nav-action-btn" title="Favoritos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="nav-badge">3</span>
+      </button>
+      <button class="nav-action-btn" title="Carrito">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="nav-badge">5</span>
+      </button>
+      <button class="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════
+  8. HERO BANNER
+════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero__pattern"></div>
+  <div class="hero__cross">
+    <svg viewBox="0 0 200 200" fill="currentColor">
+      <rect x="85" y="10" width="30" height="180"/>
+      <rect x="20" y="65" width="160" height="30"/>
+    </svg>
+  </div>
+  <div class="hero__content">
+    <div class="hero__eyebrow">Artículos Religiosos Católicos</div>
+    <h1 class="hero__title">"Yo soy el camino,<br>la verdad y la vida"</h1>
+    <p class="hero__subtitle">Encuentra los artículos sagrados que nutren tu fe y adornan tu hogar.<br>Calidad y devoción en cada pieza.</p>
+    <div class="hero__actions">
+      <button class="btn btn--primary btn--lg">Ver Catálogo</button>
+      <button class="btn btn--ghost btn--lg">Conocer más</button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  1. PALETA DE COLORES
+════════════════════════════════════ -->
+<section class="ds-section ds-section--white">
+  <div class="container">
+    <div class="section-subtitle">01 — Foundation</div>
+    <h2 class="section-title">Paleta de Colores</h2>
+    <div class="section-divider"></div>
+    <div class="color-grid">
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:#198cbd;"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">Primary</span>
+          <span class="color-swatch__hex">#198cbd</span>
+          <span class="color-swatch__use">CTAs, botones, acentos</span>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:#1577a1;"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">Primary Hover</span>
+          <span class="color-swatch__hex">#1577a1</span>
+          <span class="color-swatch__use">Estado hover de botón primario</span>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:rgba(25,140,189,0.15);border:1px solid #e0e0e0;"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">Primary Light</span>
+          <span class="color-swatch__hex">rgba(25,140,189,0.15)</span>
+          <span class="color-swatch__use">Fondos suaves, focus rings</span>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:#175a7f;"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">Secondary</span>
+          <span class="color-swatch__hex">#175a7f</span>
+          <span class="color-swatch__use">Navbar, headers, hero</span>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:#124866;"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">Secondary Dark</span>
+          <span class="color-swatch__hex">#124866</span>
+          <span class="color-swatch__use">Gradientes, hover secondary</span>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:#1d1d1d;"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">Dark</span>
+          <span class="color-swatch__hex">#1d1d1d</span>
+          <span class="color-swatch__use">Textos principales, footer</span>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:#43484c;"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">Neutral</span>
+          <span class="color-swatch__hex">#43484c</span>
+          <span class="color-swatch__use">Textos secundarios, bordes</span>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:#F8F6F2;border:1px solid #e8e5e0;"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">Light / Crema</span>
+          <span class="color-swatch__hex">#F8F6F2</span>
+          <span class="color-swatch__use">Fondos de sección, placeholders</span>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:#FFFFFF;border:1px solid #e8e8e8;"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">White</span>
+          <span class="color-swatch__hex">#FFFFFF</span>
+          <span class="color-swatch__use">Cards, formularios, modales</span>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:#C9A84C;"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">Gold</span>
+          <span class="color-swatch__hex">#C9A84C</span>
+          <span class="color-swatch__use">Separadores, badge oferta, acento</span>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:rgba(29,29,29,0.60);"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">Overlay</span>
+          <span class="color-swatch__hex">rgba(29,29,29,0.60)</span>
+          <span class="color-swatch__use">Modales, hero backdrop</span>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch__block" style="background:#2d8a4e;"></div>
+        <div class="color-swatch__info">
+          <span class="color-swatch__name">Success</span>
+          <span class="color-swatch__hex">#2d8a4e</span>
+          <span class="color-swatch__use">Alertas éxito, badge envío gratis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  2. TIPOGRAFÍA
+════════════════════════════════════ -->
+<section class="ds-section">
+  <div class="container">
+    <div class="section-subtitle">02 — Typography</div>
+    <h2 class="section-title">Tipografía</h2>
+    <div class="section-divider"></div>
+
+    <!-- Headings -->
+    <div class="demo-box demo-box--white" style="background:#fff;border-radius:12px;padding:32px;margin-bottom:24px;box-shadow:var(--shadow-sm);">
+      <div class="heading-demo">
+        <h1 class="demo" style="color:var(--color-dark);">La Palabra de Dios <span>H1 · Playfair Display 700 · 64px</span></h1>
+      </div>
+      <div class="heading-demo">
+        <h2 class="demo" style="color:var(--color-dark);">Artículos de Fe y Devoción <span>H2 · Playfair Display 700 · 48px</span></h2>
+      </div>
+      <div class="heading-demo">
+        <h3 class="demo" style="color:var(--color-dark);">Rosarios y Medallas Sagradas <span>H3 · Playfair Display 600 · 36px</span></h3>
+      </div>
+      <div class="heading-demo">
+        <h4 class="demo" style="color:var(--color-dark);">Imágenes de Santos <span>H4 · Lato 600 · 28px</span></h4>
+      </div>
+      <div class="heading-demo">
+        <h5 class="demo" style="color:var(--color-dark);">Velas y Veladoras Aromáticas <span>H5 · Lato 600 · 22px</span></h5>
+      </div>
+      <div class="heading-demo">
+        <h6 class="demo" style="color:var(--color-dark);">Incienso y Sahumerios Naturales <span>H6 · Lato 600 · 18px</span></h6>
+      </div>
+    </div>
+
+    <!-- Body & special -->
+    <div class="grid-2">
+      <div>
+        <p class="demo-body">El alma que busca a Dios con sinceridad encontrará en nuestra tienda artículos que inspiran la oración, la meditación y la devoción cotidiana. Cada pieza está seleccionada con cuidado para honrar la tradición católica y embellecer el hogar cristiano.</p>
+        <div style="margin-top:8px;font-size:12px;color:var(--color-neutral);font-family:monospace;">Lato 400 · 16px · color neutral</div>
+      </div>
+      <div>
+        <blockquote class="demo-quote">"Pedid y se os dará; buscad y encontraréis; llamad y se os abrirá la puerta."<br><small style="font-size:14px;color:var(--color-neutral);font-style:normal;">— Mateo 7:7</small></blockquote>
+        <div style="margin-top:8px;font-size:12px;color:var(--color-neutral);font-family:monospace;">Playfair Display italic · 22px</div>
+      </div>
+    </div>
+    <!-- Scale -->
+    <div style="background:#fff;border-radius:12px;padding:32px;margin-top:24px;box-shadow:var(--shadow-sm);">
+      <div class="type-scale-item">
+        <span class="type-scale-label">--text-xs · 12px</span>
+        <span class="type-demo" style="font-size:12px;color:var(--color-neutral);">CATEGORÍA — ARTÍCULOS LITÚRGICOS</span>
+      </div>
+      <div class="type-scale-item">
+        <span class="type-scale-label">--text-sm · 14px</span>
+        <span class="type-demo" style="font-size:14px;">Rosario de madera de olivo tallado a mano</span>
+      </div>
+      <div class="type-scale-item">
+        <span class="type-scale-label">--text-base · 16px</span>
+        <span class="type-demo" style="font-size:16px;">Imagen de la Virgen de Guadalupe en resina</span>
+      </div>
+      <div class="type-scale-item">
+        <span class="type-scale-label">--text-lg · 18px</span>
+        <span class="type-demo" style="font-size:18px;">Vela votiva aromática — Sándalo</span>
+      </div>
+      <div class="type-scale-item">
+        <span class="type-scale-label">--text-xl · 22px</span>
+        <span class="type-demo" style="font-size:22px;font-weight:700;color:var(--color-primary);">$245.00 MXN</span>
+      </div>
+      <div class="type-scale-item">
+        <span class="type-scale-label">--text-2xl · 28px</span>
+        <span class="type-demo" style="font-size:28px;font-family:'Playfair Display',serif;">Bienvenidos a nuestra tienda</span>
+      </div>
+      <div class="type-scale-item">
+        <span class="type-scale-label">--text-3xl · 36px</span>
+        <span class="type-demo" style="font-size:36px;font-family:'Playfair Display',serif;">Fe y Devoción</span>
+      </div>
+      <div class="type-scale-item">
+        <span class="type-scale-label">--text-4xl · 48px</span>
+        <span class="type-demo" style="font-size:48px;font-family:'Playfair Display',serif;line-height:1.1;">Gloria a Dios</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  3. BOTONES
+════════════════════════════════════ -->
+<section class="ds-section ds-section--white">
+  <div class="container">
+    <div class="section-subtitle">03 — Actions</div>
+    <h2 class="section-title">Botones</h2>
+    <div class="section-divider"></div>
+
+    <!-- Variants -->
+    <span class="btn-label">Variantes · Tamaño Medium</span>
+    <div class="btn-group">
+      <button class="btn btn--primary btn--md">Primary</button>
+      <button class="btn btn--secondary btn--md">Secondary</button>
+      <button class="btn btn--dark btn--md">Dark</button>
+      <button class="btn btn--danger btn--md">Danger</button>
+      <button class="btn btn--primary btn--md" disabled>Disabled</button>
+    </div>
+
+    <!-- Ghost sobre fondo oscuro -->
+    <span class="btn-label" style="color:var(--color-neutral);">Ghost — sobre fondo oscuro</span>
+    <div class="demo-box demo-box--dark" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+      <button class="btn btn--ghost btn--md">Ghost Button</button>
+      <button class="btn btn--ghost btn--lg">Ghost Large</button>
+      <button class="btn btn--primary btn--md">Primary sobre dark</button>
+    </div>
+
+    <!-- Sizes -->
+    <span class="btn-label" style="margin-top:24px;">Tamaños — Primary</span>
+    <div class="btn-group">
+      <button class="btn btn--primary btn--sm">Small</button>
+      <button class="btn btn--primary btn--md">Medium</button>
+      <button class="btn btn--primary btn--lg">Large</button>
+    </div>
+
+    <span class="btn-label">Tamaños — Secondary</span>
+    <div class="btn-group">
+      <button class="btn btn--secondary btn--sm">Small</button>
+      <button class="btn btn--secondary btn--md">Medium</button>
+      <button class="btn btn--secondary btn--lg">Large</button>
+    </div>
+
+    <!-- Icon buttons -->
+    <span class="btn-label">Icon Buttons (circulares)</span>
+    <div class="btn-group">
+      <button class="btn btn--primary btn--icon btn--sm" title="Buscar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="btn btn--primary btn--icon" title="Favorito">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+      <button class="btn btn--primary btn--icon btn--lg" title="Carrito">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+      </button>
+      <button class="btn btn--secondary btn--icon" title="Compartir">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <button class="btn btn--danger btn--icon" title="Eliminar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      </button>
+      <button class="btn btn--primary btn--icon" disabled title="Deshabilitado">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  4. BADGES
+════════════════════════════════════ -->
+<section class="ds-section">
+  <div class="container">
+    <div class="section-subtitle">04 — Labels</div>
+    <h2 class="section-title">Badges / Etiquetas</h2>
+    <div class="section-divider"></div>
+    <div class="flex flex-wrap gap-4 items-center">
+      <div style="text-align:center;">
+        <span class="badge badge--new">Nuevo</span>
+        <div style="font-size:11px;color:var(--color-neutral);margin-top:8px;font-family:monospace;">badge--new</div>
+      </div>
+      <div style="text-align:center;">
+        <span class="badge badge--offer">Oferta</span>
+        <div style="font-size:11px;color:var(--color-neutral);margin-top:8px;font-family:monospace;">badge--offer</div>
+      </div>
+      <div style="text-align:center;">
+        <span class="badge badge--sold-out">Agotado</span>
+        <div style="font-size:11px;color:var(--color-neutral);margin-top:8px;font-family:monospace;">badge--sold-out</div>
+      </div>
+      <div style="text-align:center;">
+        <span class="badge badge--free-ship">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          Envío Gratis
+        </span>
+        <div style="font-size:11px;color:var(--color-neutral);margin-top:8px;font-family:monospace;">badge--free-ship</div>
+      </div>
+      <div style="text-align:center;">
+        <span class="badge badge--bestseller">Más Vendido</span>
+        <div style="font-size:11px;color:var(--color-neutral);margin-top:8px;font-family:monospace;">badge--bestseller</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  5. FORMULARIOS
+════════════════════════════════════ -->
+<section class="ds-section ds-section--white">
+  <div class="container">
+    <div class="section-subtitle">05 — Forms</div>
+    <h2 class="section-title">Inputs y Formularios</h2>
+    <div class="section-divider"></div>
+    <div class="grid-2">
+      <!-- Columna izquierda -->
+      <div>
+        <div class="form-group">
+          <label class="form-label">Input de texto (default)</label>
+          <input type="text" class="form-control" placeholder="Tu nombre completo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Input con ícono (búsqueda)</label>
+          <div class="input-wrap">
+            <span class="input-icon input-icon--left">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input type="text" class="form-control has-icon-left" placeholder="Buscar artículos religiosos...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Input con error</label>
+          <input type="email" class="form-control form-control--error" value="correo-invalido" placeholder="tu@email.com">
+          <span class="form-hint form-hint--error">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Ingresa un correo electrónico válido
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Input con éxito</label>
+          <div class="input-wrap">
+            <input type="text" class="form-control form-control--success" value="Juan García López">
+            <span class="input-icon input-icon--right">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+          </div>
+          <span class="form-hint form-hint--success">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Nombre verificado correctamente
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Input deshabilitado</label>
+          <input type="text" class="form-control" placeholder="Campo no disponible" disabled>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Select / Dropdown</label>
+          <select class="form-control">
+            <option value="">Seleccionar categoría...</option>
+            <option>Velas y Veladoras</option>
+            <option>Rosarios y Medallas</option>
+            <option>Imágenes / Santos</option>
+            <option>Libros y Biblias</option>
+            <option>Incienso y Sahumerios</option>
+            <option>Artículos Litúrgicos</option>
+            <option>Joyería Religiosa</option>
+          </select>
+        </div>
+      </div>
+      <!-- Columna derecha -->
+      <div>
+        <div class="form-group">
+          <label class="form-label">Textarea</label>
+          <textarea class="form-control" placeholder="Escribe tu mensaje o comentario aquí..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Checkboxes</label>
+          <div class="check-group">
+            <label class="check-label">
+              <input type="checkbox" checked>
+              <span class="check-box"></span>
+              Rosarios y Medallas
+            </label>
+            <label class="check-label">
+              <input type="checkbox">
+              <span class="check-box"></span>
+              Imágenes y Santos
+            </label>
+            <label class="check-label">
+              <input type="checkbox">
+              <span class="check-box"></span>
+              Libros y Biblias
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Radio Buttons</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="envio" checked>
+              <span class="radio-circle"></span>
+              Envío estándar (3–5 días)
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="envio">
+              <span class="radio-circle"></span>
+              Envío express (1–2 días)
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="envio">
+              <span class="radio-circle"></span>
+              Recoger en tienda
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Toggle Switches</label>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <label class="toggle-label">
+              <input type="checkbox" checked onchange="this.parentNode.querySelector('.toggle-track').style.background=this.checked?'var(--color-primary)':'#d0d3d5';this.parentNode.querySelector('.toggle-thumb').style.transform=this.checked?'translateX(20px)':''">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+              Recibir notificaciones
+            </label>
+            <label class="toggle-label">
+              <input type="checkbox" onchange="this.parentNode.querySelector('.toggle-track').style.background=this.checked?'var(--color-primary)':'#d0d3d5';this.parentNode.querySelector('.toggle-thumb').style.transform=this.checked?'translateX(20px)':''">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+              Boletín de novedades
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  6. CARDS DE PRODUCTO
+════════════════════════════════════ -->
+<section class="ds-section">
+  <div class="container">
+    <div class="section-subtitle">06 — Product</div>
+    <h2 class="section-title">Cards de Producto</h2>
+    <div class="section-divider"></div>
+
+    <!-- Cards estándar -->
+    <h4 style="font-size:var(--text-base);font-weight:600;color:var(--color-neutral);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;">Card Estándar</h4>
+    <div class="grid-3" style="margin-bottom:48px;">
+      <!-- Card 1 -->
+      <div class="product-card">
+        <div class="product-card__image">
+          <span class="product-card__badge"><span class="badge badge--new">Nuevo</span></span>
+          <button class="product-card__fav" onclick="this.classList.toggle('active')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <div class="product-card__image-placeholder">
+            <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <line x1="40" y1="10" x2="40" y2="70"/>
+              <line x1="18" y1="28" x2="62" y2="28"/>
+            </svg>
+          </div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Rosarios y Medallas</div>
+          <h3 class="product-card__name">Rosario de Madera de Olivo con Cruz Dorada</h3>
+          <div class="product-card__rating">
+            <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+            <span class="rating-count">(24 reseñas)</span>
+          </div>
+          <div class="product-card__pricing">
+            <span class="price-current">$285.00</span>
+            <span class="price-original">$350.00</span>
+          </div>
+        </div>
+        <div class="product-card__footer">
+          <button class="btn btn--primary btn--md" style="width:100%;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            Agregar al Carrito
+          </button>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="product-card">
+        <div class="product-card__image">
+          <span class="product-card__badge"><span class="badge badge--bestseller">Más Vendido</span></span>
+          <button class="product-card__fav active" onclick="this.classList.toggle('active')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <div class="product-card__image-placeholder">
+            <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <line x1="40" y1="10" x2="40" y2="70"/>
+              <line x1="18" y1="28" x2="62" y2="28"/>
+            </svg>
+          </div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Imágenes / Santos</div>
+          <h3 class="product-card__name">Imagen de la Virgen de Guadalupe en Resina 30 cm</h3>
+          <div class="product-card__rating">
+            <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+            <span class="rating-count">(87 reseñas)</span>
+          </div>
+          <div class="product-card__pricing">
+            <span class="price-current">$590.00</span>
+          </div>
+        </div>
+        <div class="product-card__footer">
+          <button class="btn btn--primary btn--md" style="width:100%;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            Agregar al Carrito
+          </button>
+        </div>
+      </div>
+      <!-- Card 3 agotado -->
+      <div class="product-card">
+        <div class="product-card__image" style="opacity:0.6;">
+          <span class="product-card__badge"><span class="badge badge--sold-out">Agotado</span></span>
+          <button class="product-card__fav" onclick="this.classList.toggle('active')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <div class="product-card__image-placeholder">
+            <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <line x1="40" y1="10" x2="40" y2="70"/>
+              <line x1="18" y1="28" x2="62" y2="28"/>
+            </svg>
+          </div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Artículos Litúrgicos</div>
+          <h3 class="product-card__name">Cáliz Dorado de Plata de Ley 925 con Grab.</h3>
+          <div class="product-card__rating">
+            <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+            <span class="rating-count">(12 reseñas)</span>
+          </div>
+          <div class="product-card__pricing">
+            <span class="price-current" style="color:var(--color-neutral);">$1,890.00</span>
+          </div>
+        </div>
+        <div class="product-card__footer">
+          <button class="btn btn--secondary btn--md" style="width:100%;" disabled>Agotado</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card horizontal -->
+    <h4 style="font-size:var(--text-base);font-weight:600;color:var(--color-neutral);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;">Card Horizontal (Lista / Resultados)</h4>
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:700px;margin-bottom:48px;">
+      <div class="product-card product-card--horizontal">
+        <div class="product-card__image" style="height:150px;">
+          <span class="product-card__badge"><span class="badge badge--offer">Oferta</span></span>
+          <div class="product-card__image-placeholder">
+            <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:48px;height:48px;">
+              <line x1="30" y1="8" x2="30" y2="52"/>
+              <line x1="12" y1="22" x2="48" y2="22"/>
+            </svg>
+          </div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;">
+          <div class="product-card__body">
+            <div class="product-card__category">Velas y Veladoras</div>
+            <h3 class="product-card__name">Veladora Aromática de Lavanda y Manzanilla — Pack 6 piezas</h3>
+            <div class="product-card__rating">
+              <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              <span class="rating-count">(45)</span>
+            </div>
+            <div class="product-card__pricing">
+              <span class="price-current">$180.00</span>
+              <span class="price-original">$240.00</span>
+            </div>
+          </div>
+          <div class="product-card__footer">
+            <button class="btn btn--primary btn--sm">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards mini (carrito) -->
+    <h4 style="font-size:var(--text-base);font-weight:600;color:var(--color-neutral);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;">Card Mini (Carrito Lateral)</h4>
+    <div style="max-width:340px;background:var(--color-white);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);overflow:hidden;">
+      <div style="padding:16px 20px;border-bottom:1px solid rgba(67,72,76,0.1);font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--color-dark);">Tu Carrito (3)</div>
+      <div style="padding:8px 12px;display:flex;flex-direction:column;gap:4px;">
+        <div class="product-card product-card--mini">
+          <div class="product-card__image">
+            <div class="product-card__image-placeholder" style="width:72px;height:72px;border-radius:8px;">
+              <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:28px;height:28px;">
+                <line x1="20" y1="6" x2="20" y2="34"/><line x1="8" y1="15" x2="32" y2="15"/>
+              </svg>
+            </div>
+          </div>
+          <div class="product-card__body">
+            <div class="product-card__name">Rosario de Olivo</div>
+            <div class="product-card__pricing">
+              <span class="price-current" style="font-size:15px;">$285.00</span>
+            </div>
+          </div>
+          <button class="btn btn--danger btn--icon btn--sm">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="product-card product-card--mini">
+          <div class="product-card__image">
+            <div class="product-card__image-placeholder" style="width:72px;height:72px;border-radius:8px;">
+              <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:28px;height:28px;">
+                <line x1="20" y1="6" x2="20" y2="34"/><line x1="8" y1="15" x2="32" y2="15"/>
+              </svg>
+            </div>
+          </div>
+          <div class="product-card__body">
+            <div class="product-card__name">Virgen de Guadalupe 30cm</div>
+            <div class="product-card__pricing">
+              <span class="price-current" style="font-size:15px;">$590.00</span>
+            </div>
+          </div>
+          <button class="btn btn--danger btn--icon btn--sm">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div style="padding:16px 20px;border-top:1px solid rgba(67,72,76,0.1);">
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+          <span style="font-weight:600;color:var(--color-dark);">Total</span>
+          <span style="font-weight:700;font-size:18px;color:var(--color-primary);">$875.00</span>
+        </div>
+        <button class="btn btn--primary btn--md" style="width:100%;">Proceder al Pago</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  9. CATEGORY CARDS
+════════════════════════════════════ -->
+<section class="ds-section ds-section--white">
+  <div class="container">
+    <div class="section-subtitle">09 — Navigation</div>
+    <h2 class="section-title">Categorías</h2>
+    <div class="section-divider"></div>
+    <div class="grid-7">
+      <div class="category-card">
+        <div class="category-card__icon">&#128305;</div>
+        <div class="category-card__name">Velas y Veladoras</div>
+      </div>
+      <div class="category-card">
+        <div class="category-card__icon">&#128382;</div>
+        <div class="category-card__name">Rosarios y Medallas</div>
+      </div>
+      <div class="category-card">
+        <div class="category-card__icon">&#10013;</div>
+        <div class="category-card__name">Imágenes y Santos</div>
+      </div>
+      <div class="category-card">
+        <div class="category-card__icon">&#128214;</div>
+        <div class="category-card__name">Libros y Biblias</div>
+      </div>
+      <div class="category-card">
+        <div class="category-card__icon">&#127807;</div>
+        <div class="category-card__name">Incienso y Sahumerios</div>
+      </div>
+      <div class="category-card">
+        <div class="category-card__icon">&#9961;</div>
+        <div class="category-card__name">Artículos Litúrgicos</div>
+      </div>
+      <div class="category-card">
+        <div class="category-card__icon">&#128141;</div>
+        <div class="category-card__name">Joyería Religiosa</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  11. ALERTAS / TOASTS
+════════════════════════════════════ -->
+<section class="ds-section">
+  <div class="container">
+    <div class="section-subtitle">11 — Feedback</div>
+    <h2 class="section-title">Alertas y Toasts</h2>
+    <div class="section-divider"></div>
+    <div style="max-width:640px;display:flex;flex-direction:column;gap:12px;">
+      <div class="alert alert--success">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+        <div class="alert__content">
+          <div class="alert__title">Producto agregado al carrito</div>
+          <div class="alert__text">El Rosario de Madera de Olivo fue agregado exitosamente a tu carrito.</div>
+        </div>
+        <button class="alert__close" onclick="this.closest('.alert').style.display='none'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="alert alert--error">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        <div class="alert__content">
+          <div class="alert__title">Error en el pago</div>
+          <div class="alert__text">No pudimos procesar tu tarjeta. Verifica los datos e intenta de nuevo.</div>
+        </div>
+        <button class="alert__close" onclick="this.closest('.alert').style.display='none'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="alert alert--warning">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div class="alert__content">
+          <div class="alert__title">Solo quedan 2 unidades</div>
+          <div class="alert__text">Este artículo tiene pocas existencias. Completa tu pedido pronto.</div>
+        </div>
+        <button class="alert__close" onclick="this.closest('.alert').style.display='none'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="alert alert--info">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div class="alert__content">
+          <div class="alert__title">Envío gratis en pedidos mayores a $500</div>
+          <div class="alert__text">Te faltan $215.00 para obtener envío gratuito a todo México.</div>
+        </div>
+        <button class="alert__close" onclick="this.closest('.alert').style.display='none'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  12. MODAL
+════════════════════════════════════ -->
+<section class="ds-section ds-section--white">
+  <div class="container">
+    <div class="section-subtitle">12 — Overlay</div>
+    <h2 class="section-title">Modal</h2>
+    <div class="section-divider"></div>
+    <p style="color:var(--color-neutral);margin-bottom:24px;">Haz clic en el botón para ver el modal en acción:</p>
+    <button class="btn btn--primary btn--md" onclick="document.getElementById('demo-modal').classList.add('open')">Abrir Modal Demo</button>
+  </div>
+</section>
+
+<!-- Modal overlay -->
+<div class="modal-overlay" id="demo-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal__header">
+      <h2 class="modal__title">Confirmar Compra</h2>
+      <button class="modal__close" onclick="document.getElementById('demo-modal').classList.remove('open')">&#10005;</button>
+    </div>
+    <div class="modal__body">
+      <p style="color:var(--color-neutral);margin-bottom:16px;">Estás a punto de agregar al carrito:</p>
+      <div style="background:var(--color-light);border-radius:var(--radius-md);padding:16px;margin-bottom:16px;display:flex;gap:16px;align-items:center;">
+        <div style="width:64px;height:64px;background:rgba(67,72,76,0.08);border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(67,72,76,0.3);">
+          <svg width="32" height="32" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="20" y1="6" x2="20" y2="34"/><line x1="8" y1="15" x2="32" y2="15"/></svg>
+        </div>
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--color-dark);">Rosario de Madera de Olivo</div>
+          <div style="font-size:13px;color:var(--color-neutral);margin-top:2px;">1 pieza · Color natural</div>
+          <div style="font-weight:700;color:var(--color-primary);margin-top:4px;">$285.00 MXN</div>
+        </div>
+      </div>
+      <div class="alert alert--info" style="margin-bottom:0;">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div class="alert__content">
+          <div class="alert__text">Recibirás tu pedido en 3–5 días hábiles con envío estándar.</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal__footer">
+      <button class="btn btn--secondary btn--md" onclick="document.getElementById('demo-modal').classList.remove('open')">Cancelar</button>
+      <button class="btn btn--primary btn--md" onclick="document.getElementById('demo-modal').classList.remove('open');showToast()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Confirmar y Agregar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast flotante -->
+<div id="floating-toast" style="position:fixed;bottom:24px;right:24px;z-index:300;opacity:0;transform:translateY(12px);transition:all 0.35s ease;pointer-events:none;max-width:340px;">
+  <div class="alert alert--success" style="box-shadow:var(--shadow-xl);margin-bottom:0;border-radius:var(--radius-md);">
+    <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+    <div class="alert__content">
+      <div class="alert__title">Agregado al carrito</div>
+      <div class="alert__text">Rosario de Madera de Olivo — $285.00</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+  10. FOOTER
+════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div>
+      <div class="footer__brand-logo">
+        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round">
+          <line x1="16" y1="3" x2="16" y2="29"/>
+          <line x1="7" y1="10" x2="25" y2="10"/>
+        </svg>
+        <span class="footer__brand-name">Jesús de Nazaret</span>
+      </div>
+      <p class="footer__tagline">"Artículos sagrados para el hogar y la devoción cristiana."</p>
+      <div class="footer__socials">
+        <button class="social-btn" title="Facebook">f</button>
+        <button class="social-btn" title="Instagram">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </button>
+        <button class="social-btn" title="WhatsApp">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </button>
+        <button class="social-btn" title="YouTube">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58a2.78 2.78 0 0 0 1.94 1.96C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg>
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Navegación</div>
+      <ul class="footer__links">
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Catálogo Completo</a></li>
+        <li><a href="#">Novedades</a></li>
+        <li><a href="#">Ofertas</a></li>
+        <li><a href="#">Nosotros</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Categorías</div>
+      <ul class="footer__links">
+        <li><a href="#">Velas y Veladoras</a></li>
+        <li><a href="#">Rosarios y Medallas</a></li>
+        <li><a href="#">Imágenes / Santos</a></li>
+        <li><a href="#">Libros y Biblias</a></li>
+        <li><a href="#">Incienso y Sahumerios</a></li>
+        <li><a href="#">Artículos Litúrgicos</a></li>
+        <li><a href="#">Joyería Religiosa</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Contacto</div>
+      <div class="footer__contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Av. Juárez 1847, Col. Centro<br>Guadalajara, Jalisco, México</span>
+      </div>
+      <div class="footer__contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.39 2 2 0 0 1 3.62 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.83a16 16 0 0 0 6.29 6.29l.82-1.89a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg>
+        <span>+52 (33) 1234-5678</span>
+      </div>
+      <div class="footer__contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span>contacto@jesusnazaret.mx</span>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:var(--space-7) auto 0;padding:0 var(--space-5);">
+    <div style="height:1px;background:rgba(255,255,255,0.08);margin-bottom:0;"></div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copyright">&copy; 2026 Jesús de Nazaret — Todos los derechos reservados</span>
+    <span class="footer__faith">Hecho con fe &#128591;</span>
+  </div>
+</footer>
+
+<script>
+// Toggle hamburger menu (demo)
+document.querySelector('.hamburger').addEventListener('click', function() {
+  const nav = document.querySelector('.navbar__nav');
+  const isOpen = nav.style.display === 'flex';
+  nav.style.display = isOpen ? '' : 'flex';
+  nav.style.flexDirection = 'column';
+  nav.style.position = isOpen ? '' : 'absolute';
+  nav.style.top = isOpen ? '' : '68px';
+  nav.style.left = isOpen ? '' : '0';
+  nav.style.right = isOpen ? '' : '0';
+  nav.style.background = isOpen ? '' : 'var(--color-secondary-dark)';
+  nav.style.padding = isOpen ? '' : '16px 24px';
+  nav.style.gap = isOpen ? '' : '12px';
+  nav.style.zIndex = isOpen ? '' : '99';
+  nav.style.boxShadow = isOpen ? '' : 'var(--shadow-lg)';
+});
+
+// Reset hamburger on resize
+window.addEventListener('resize', function() {
+  if (window.innerWidth > 768) {
+    const nav = document.querySelector('.navbar__nav');
+    nav.style = '';
+  }
+});
+
+// Toast notification
+function showToast() {
+  const toast = document.getElementById('floating-toast');
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateY(0)';
+  toast.style.pointerEvents = 'all';
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(12px)';
+    toast.style.pointerEvents = 'none';
+  }, 3500);
+}
+
+// Favorite buttons (cards)
+document.querySelectorAll('.product-card__fav').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    this.classList.toggle('active');
+    const svg = this.querySelector('svg');
+    if (this.classList.contains('active')) {
+      svg.setAttribute('fill', 'currentColor');
+    } else {
+      svg.setAttribute('fill', 'none');
+    }
+  });
+});
+
+// Keyboard: close modal with Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.getElementById('demo-modal').classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>
