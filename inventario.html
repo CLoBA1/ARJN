@@ -4426,8 +4426,18 @@ console.log('%cConectado a: ' + API_BASE, 'color:#C9A84C;');
    NEW JS LOGIC (UPDATES)
 ═══════════════════════════════════════ */
 
+function openModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) modal.classList.add('open');
+}
+
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) modal.classList.remove('open');
+}
+
 // --- 2. MODAL CONFIRM ---
-confirmCallback = null;
+let confirmCallback = null;
 function showConfirm(title, message, onConfirm, type='danger') {
   $('confirm-title').textContent = title;
   $('confirm-message').textContent = message;
