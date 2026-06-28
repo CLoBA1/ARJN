@@ -1106,10 +1106,6 @@ function showConfirm(title, message, onConfirm, type='danger') {
   confirmCallback = onConfirm;
   openModal('modal-confirm');
 }
-$('confirm-ok').addEventListener('click', () => {
-  if(confirmCallback) confirmCallback();
-  closeModal('modal-confirm');
-});
 
 // Overwrite deleteProduct
 window.deleteProduct = function(id) {
@@ -1574,10 +1570,6 @@ function showConfirm(title, message, onConfirm, type='danger') {
   confirmCallback = onConfirm;
   openModal('modal-confirm');
 }
-$('confirm-ok').addEventListener('click', () => {
-  if(confirmCallback) confirmCallback();
-  closeModal('modal-confirm');
-});
 
 // Overwrite deleteProduct
 window.deleteProduct = function(id) {
@@ -3259,6 +3251,13 @@ async function doLogin(e) {
 
   if (res.success) {
     APP.token       = res.token;
+    localStorage.setItem('jn_token', res.token);
+    localStorage.setItem('jn_user', JSON.stringify({
+      username: res.usuario.username,
+      nombre:   res.usuario.nombre,
+      rol:      res.usuario.rol
+    }));
+    localStorage.setItem('jn_expires', res.expires_at);
     APP.currentUser = res.usuario.username;
     APP.currentRole = res.usuario.rol === 'admin' ? 'Admin' : 'Empleado';
 
@@ -3295,6 +3294,9 @@ async function doLogin(e) {
 function doLogout() {
   if (APP.token) api('/auth/logout.php', 'POST');
   APP.token = null;
+  localStorage.removeItem('jn_token');
+  localStorage.removeItem('jn_user');
+  localStorage.removeItem('jn_expires');
   APP.currentUser = null;
   APP.currentRole = null;
   APP.products = [];
@@ -3900,6 +3902,43 @@ function renderPagination(containerId, current, total, onPage) {
   html+=`<button class="page-btn" onclick="(${onPage})(${current+1})" ${current>=total?'disabled':''}>›</button>`;
   el.innerHTML=html;
 }
+
+(function restoreSession() {
+  const token   = localStorage.getItem('jn_token');
+  const userStr = localStorage.getItem('jn_user');
+  const expires = localStorage.getItem('jn_expires');
+  if (!token || !userStr || !expires) return;
+  if (new Date(expires) < new Date()) {
+    localStorage.removeItem('jn_token');
+    localStorage.removeItem('jn_user');
+    localStorage.removeItem('jn_expires');
+    return;
+  }
+  const user = JSON.parse(userStr);
+  APP.token       = token;
+  APP.currentUser = user.username;
+  APP.currentRole = user.rol === 'admin' ? 'Admin' : 'Empleado';
+  const nombre = user.nombre;
+  $('user-avatar-topbar').textContent = initials(nombre);
+  $('user-avatar-topbar').style.background = avatarColor(nombre);
+  $('topbar-username').textContent = nombre;
+  $('topbar-role').textContent = APP.currentRole === 'Admin' ? 'Administrador' : 'Empleado';
+  $('role-badge').textContent = APP.currentRole.toUpperCase();
+  $('role-badge').className = `badge ${APP.currentRole === 'Admin' ? 'badge-primary' : 'badge-warning'}`;
+  document.querySelectorAll('.admin-only').forEach(el => {
+    el.style.display = APP.currentRole === 'Admin' ? '' : 'none';
+  });
+  $('login-screen').style.display = 'none';
+  $('app-panel').style.display = 'flex';
+  $('app-panel').style.flexDirection = 'column';
+  $('dash-date').textContent = new Date().toLocaleDateString('es-MX',
+    {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  loadCategorias().then(() => {
+    buildSidebar();
+    const defaultSection = APP.currentRole === 'Admin' ? 'dashboard' : 'productos';
+    navigateTo(defaultSection);
+  });
+})();
 
 /* ═══════════════════════════════════════
    SORTING
