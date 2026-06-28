@@ -10,16 +10,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') respondError('Método no permitido', 
 
 $data = json_decode(file_get_contents("php://input"));
 if (empty($data->nombre)) respondError('El nombre es requerido');
+$prefijo = !empty($data->prefijo) ? strtoupper(trim($data->prefijo)) : null;
 
 $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $data->nombre)));
 
 $db = (new Database())->getConnection();
-$stmt = $db->prepare("INSERT INTO categorias (nombre, descripcion, icono, slug, orden) VALUES (?, ?, ?, ?, ?)");
+$stmt = $db->prepare("INSERT INTO categorias (nombre, prefijo, descripcion, icono, slug, orden) VALUES (?, ?, ?, ?, ?, ?)");
 $stmt->execute([
-    trim($data->nombre), 
-    $data->descripcion ?? null, 
-    $data->icono ?? null, 
-    $slug, 
+    trim($data->nombre),
+    $prefijo,
+    $data->descripcion ?? null,
+    $data->icono ?? null,
+    $slug,
     $data->orden ?? 0
 ]);
 
