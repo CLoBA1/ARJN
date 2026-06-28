@@ -3905,6 +3905,7 @@ function renderPagination(containerId, current, total, onPage) {
    SORTING
 ═══════════════════════════════════════ */
 let sortCol = null, sortAsc = true;
+let confirmCallback = null;
 window.handleSort = function(col) {
   const colMap = { name:'nombre', sku:'sku', cat:'nombre_categoria', price:'precio_venta', stock:'stock_actual' };
   const apiCol = colMap[col]||col;
@@ -4416,7 +4417,6 @@ window.removeImage=function(e){e.stopPropagation();if($('p-img-base64'))$('p-img
 /* ═══════════════════════════════════════
    MODAL CONFIRM (preservado)
 ═══════════════════════════════════════ */
-confirmCallback = null;
 function showConfirm(title,message,onConfirm,type='danger'){
   $('confirm-title').textContent=title;
   $('confirm-message').textContent=message;
@@ -4534,7 +4534,6 @@ function closeModal(id) {
 }
 
 // --- 2. MODAL CONFIRM ---
-let confirmCallback = null;
 function showConfirm(title, message, onConfirm, type='danger') {
   $('confirm-title').textContent = title;
   $('confirm-message').textContent = message;
